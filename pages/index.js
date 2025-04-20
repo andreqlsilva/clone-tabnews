@@ -9,7 +9,7 @@ function Home() {
             padding: "5px",
           }}
         >
-          Portal dos Tabelionatos do Mato Grosso do Sul
+          Um Portal dos Tabelionatos do Mato Grosso do Sul
         </h1>
         <h2>mstab.com.br</h2>
       </span>
