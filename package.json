@@ -10,6 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "container:up": "docker compose -f infra/compose.yaml up -d",
+    "container:stop": "docker compose -f infra/compose.yaml stop",
     "container:down": "docker compose -f infra/compose.yaml down"
   },
   "author": "",
