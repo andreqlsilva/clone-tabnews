@@ -1,7 +1,5 @@
 test("GET no /api/v1/status deve retornar o estado", async () => {
-  const response = await fetch(
-    "http://localhost:3000/api/v1/status?databaseName=postgres",
-  );
+  const response = await fetch("http://localhost:3000/api/v1/status");
 
   // Was the fetch succesful?
   expect(response.status).toBe(200);
@@ -27,10 +25,4 @@ test("GET no /api/v1/status deve retornar o estado", async () => {
   // Is used_connections equal to 1?
   expect(responseBody.used_connections).not.toBe(NaN);
   expect(responseBody.used_connections).toBe(1);
-});
-
-test.only("Teste de SQL Injection", async () => {
-  const response = await fetch(
-    "http://localhost:3000/api/v1/status?databaseName='; SELECT pg_sleep(4); --",
-  );
 });
