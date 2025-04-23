@@ -1,5 +1,7 @@
 test("GET no /api/v1/status deve retornar o estado", async () => {
-  const response = await fetch("http://localhost:3000/api/v1/status");
+  const response = await fetch(
+    "http://localhost:3000/api/v1/status?databaseName=postgres",
+  );
 
   // Was the fetch succesful?
   expect(response.status).toBe(200);
@@ -22,7 +24,13 @@ test("GET no /api/v1/status deve retornar o estado", async () => {
   expect(responseBody.max_connections).not.toBe(NaN);
   expect(responseBody.max_connections > 0).toBe(true);
 
-  // Is used_connections a non-negative integer that's less than max_connections?
+  // Is used_connections equal to 1?
   expect(responseBody.used_connections).not.toBe(NaN);
   expect(responseBody.used_connections).toBe(1);
+});
+
+test.only("Teste de SQL Injection", async () => {
+  const response = await fetch(
+    "http://localhost:3000/api/v1/status?databaseName='; SELECT pg_sleep(4); --",
+  );
 });
