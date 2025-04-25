@@ -16,13 +16,15 @@ test("GET no /api/v1/status deve retornar o estado", async () => {
 
   // Is postgres_version a valid version number?
   const versionRegex = /([1-9](\d*))+/;
-  expect(versionRegex.test(responseBody.postgres_version)).toBe(true);
+  expect(
+    versionRegex.test(responseBody.dependencies.database.postgres_version),
+  ).toBe(true);
 
   // Is max_connections a positive integer?
-  expect(responseBody.max_connections).not.toBe(NaN);
-  expect(responseBody.max_connections > 0).toBe(true);
+  expect(responseBody.dependencies.database.max_connections).not.toBe(NaN);
+  expect(responseBody.dependencies.database.max_connections > 0).toBe(true);
 
   // Is used_connections equal to 1?
-  expect(responseBody.used_connections).not.toBe(NaN);
-  expect(responseBody.used_connections).toBe(1);
+  expect(responseBody.dependencies.database.used_connections).not.toBe(NaN);
+  expect(responseBody.dependencies.database.used_connections).toBe(1);
 });
