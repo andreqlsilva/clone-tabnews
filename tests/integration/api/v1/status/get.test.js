@@ -1,6 +1,6 @@
 test("GET no /api/v1/status deve retornar o estado", async () => {
   const response = await fetch("http://localhost:3000/api/v1/status");
-
+ 
   // Was the fetch succesful?
   expect(response.status).toBe(200);
 
