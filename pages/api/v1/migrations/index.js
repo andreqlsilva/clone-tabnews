@@ -12,14 +12,14 @@ export default async function migrations(request, response) {
     migrationsTable: "pgmigrations",
     verbose: "true",
   };
-  if (request.method !== 'POST') {
+  if (request.method === 'GET') {
     const pendingMigrations = await migrationRunner(defMigOpt);
     await dbClient.end();
 
     return response.status(200).json(pendingMigrations);
   }
 
-  else {
+  else if (request.method === 'POST') {
     const migratedMigrations = await migrationRunner({
       ...defMigOpt,
       dryRun: false,
