@@ -21,7 +21,7 @@ export default async function migrations(request, response) {
   }
 
   else if (request.method === 'POST') {
-    await database.query("DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;");
+//    await database.query("DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;");
     const migratedMigrations = await migrationRunner({
       ...defMigOpt,
       dryRun: false,
