@@ -12,34 +12,30 @@ export default async function migrations(request, response) {
     migrationsTable: "pgmigrations",
     verbose: "true",
   };
+  try { 
+    if (request.method === 'GET') {
+      const pendingMigrations = await migrationRunner(defMigOpt);
+      await dbClient.end();
 
-  if (request.method === 'GET') {
-    const pendingMigrations = await migrationRunner(defMigOpt);
-    //await dbClient.end();
-
-    return response.status(200).json(pendingMigrations);
-  }
-
-  else if (request.method === 'POST') {
-//    await database.query("DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;");
-    const migratedMigrations = await migrationRunner({
-      ...defMigOpt,
-      dryRun: false,
-    });
-    await dbClient.end();
-    if (migratedMigrations.length > 0) {
-      return response.status(201).json(migratedMigrations);
+      return response.status(200).json(pendingMigrations);
     }
-    else return response.status(200).json(migratedMigrations);
-  }
-  else if (request.method === 'DELETE') {
-    await database.query("DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;");
-    const pendingMigrations = await migrationRunner(defMigOpt);
-    //await dbClient.end();
-    return response.status(201).json(pendingMigrations);
-  }
 
-//  await dbClient.end();
-  return response.status(405).end();
+    else if (request.method === 'POST') {
+      const migratedMigrations = await migrationRunner({
+        ...defMigOpt,
+        dryRun: false,
+      });
+      await dbClient.end();
+      if (migratedMigrations.length > 0) {
+        return response.status(201).json(migratedMigrations);
+      }
+      else return response.status(200).json(migratedMigrations);
+    }
+  } catch (err) {
+    throw err;
+  } finally {
+    await dbClient.end();
+    return response.status(405).end();
+  }
 }
 
