@@ -6,7 +6,7 @@ async function cleanDatabase() {
 
 beforeAll(cleanDatabase);
 
-test("POST no /api/v1/migrations deve retornar 200", async () => {
+test("POST no /api/v1/migrations deve retornar 201 ou 200", async () => {
   const response1 = await fetch("http://localhost:3000/api/v1/migrations",{
     method:'POST',
   });
@@ -35,5 +35,12 @@ test("POST no /api/v1/migrations deve retornar 200", async () => {
   expect(Array.isArray(response2Body)).toBe(true);
   expect(response2Body.length).toBe(0);
 
+  // Runaway connections?
+  const dummy1 = await fetch("http://localhost:3000/api/v1/migrations",{method:'POST'});
+  const dummy2 = await fetch("http://localhost:3000/api/v1/migrations",{method:'POST'});
+  const dummy3 = await fetch("http://localhost:3000/api/v1/migrations",{method:'POST'});
+  const statusBody = await (await fetch("http://localhost:3000/api/v1/status")).json();
+  expect(statusBody.dependencies.database.used_connections).not.toBe(NaN);
+  expect(statusBody.dependencies.database.used_connections).toBe(1);
 });
 

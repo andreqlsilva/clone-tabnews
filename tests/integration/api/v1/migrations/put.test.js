@@ -6,16 +6,19 @@ async function cleanDatabase() {
 
 beforeAll(cleanDatabase);
 
-test("Outras requisições no /api/v1/migrations devem retornar 200", async () => {
+test("Requisições PUT no /api/v1/migrations devem retornar 405", async () => {
   const response = await fetch("http://localhost:3000/api/v1/migrations", {
     method:'PUT',
   });
 
   // Was the fetch succesful?
-  expect(response.status).toBe(200);
+  expect(response.status).toBe(405);
 
-  const responseBody = await response.json();
-
-  expect(Array.isArray(responseBody)).toBe(true);
-  expect(responseBody.length).toBeGreaterThan(0);
+  // Runaway connections?
+  const dummy1 = await fetch("http://localhost:3000/api/v1/migrations",{method:'PUT',});
+  const dummy2 = await fetch("http://localhost:3000/api/v1/migrations",{method:'PUT',});
+  const dummy3 = await fetch("http://localhost:3000/api/v1/migrations",{method:'PUT',});
+  const statusBody = await (await fetch("http://localhost:3000/api/v1/status")).json();
+  expect(statusBody.dependencies.database.used_connections).not.toBe(NaN);
+  expect(statusBody.dependencies.database.used_connections).toBe(1);
 });

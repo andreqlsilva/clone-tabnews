@@ -25,6 +25,7 @@ test("GET no /api/v1/status deve retornar o estado", async () => {
   expect(responseBody.dependencies.database.max_connections > 0).toBe(true);
 
   // Is used_connections equal to 1?
+  // (Could be triggered by other types of requests)
   expect(responseBody.dependencies.database.used_connections).not.toBe(NaN);
   expect(responseBody.dependencies.database.used_connections).toBe(1);
 });
