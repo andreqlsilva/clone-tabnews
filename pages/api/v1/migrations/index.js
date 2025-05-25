@@ -15,7 +15,7 @@ export default async function migrations(request, response) {
 
   if (request.method === 'GET') {
     const pendingMigrations = await migrationRunner(defMigOpt);
-//    await dbClient.end();
+    //await dbClient.end();
 
     return response.status(200).json(pendingMigrations);
   }
@@ -35,11 +35,11 @@ export default async function migrations(request, response) {
   else if (request.method === 'DELETE') {
     await database.query("DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;");
     const pendingMigrations = await migrationRunner(defMigOpt);
-    await dbClient.end();
+    //await dbClient.end();
     return response.status(201).json(pendingMigrations);
   }
 
-  await dbClient.end();
+//  await dbClient.end();
   return response.status(405).end();
 }
 
