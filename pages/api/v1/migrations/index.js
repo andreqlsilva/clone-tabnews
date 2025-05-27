@@ -22,6 +22,7 @@ export default async function migrations(request, response) {
     }; 
     if (request.method === 'GET') {
       const pendingMigrations = await migrationRunner(defMigOpt);
+//    await dbClient.end();
       return response.status(200).json(pendingMigrations);
     }
 
@@ -31,14 +32,16 @@ export default async function migrations(request, response) {
         dryRun: false,
       });
       if (migratedMigrations.length > 0) {
+        await dbClient.end();
         return response.status(201).json(migratedMigrations);
       }
-      else return response.status(200).json(migratedMigrations);
+      await dbClient.end();
+      return response.status(200).json(migratedMigrations);
     }
   } catch (error) {
     throw error;
   } finally {
-    await dbClient.end();
+    console.log("The end");
   }
 }
 
