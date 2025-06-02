@@ -22,9 +22,9 @@ test("GET no /api/v1/migrations deve retornar 200", async () => {
   expect(responseBody.length).toBeGreaterThan(0);
 
   // Runaway connections?
-  const dummy1 = await fetch("http://localhost:3000/api/v1/migrations");
-  const dummy2 = await fetch("http://localhost:3000/api/v1/migrations");
-  const dummy3 = await fetch("http://localhost:3000/api/v1/migrations");
+  await fetch("http://localhost:3000/api/v1/migrations");
+  await fetch("http://localhost:3000/api/v1/migrations");
+  await fetch("http://localhost:3000/api/v1/migrations");
   const statusBody = await (
     await fetch("http://localhost:3000/api/v1/status")
   ).json();

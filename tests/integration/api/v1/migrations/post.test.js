@@ -40,13 +40,13 @@ test("POST no /api/v1/migrations deve retornar 201 ou 200", async () => {
   expect(response2Body.length).toBe(0);
 
   // Runaway connections?
-  const dummy1 = await fetch("http://localhost:3000/api/v1/migrations", {
+  await fetch("http://localhost:3000/api/v1/migrations", {
     method: "POST",
   });
-  const dummy2 = await fetch("http://localhost:3000/api/v1/migrations", {
+  await fetch("http://localhost:3000/api/v1/migrations", {
     method: "POST",
   });
-  const dummy3 = await fetch("http://localhost:3000/api/v1/migrations", {
+  await fetch("http://localhost:3000/api/v1/migrations", {
     method: "POST",
   });
   const statusBody = await (
