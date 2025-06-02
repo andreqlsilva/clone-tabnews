@@ -1,10 +1,8 @@
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
-//  console.log("Good enough.");
   await orchestrator.waitForAllServices();
 });
-
 
 test("GET no /api/v1/status deve retornar o estado", async () => {
   const response = await fetch("http://localhost:3000/api/v1/status");
