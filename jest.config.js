@@ -14,17 +14,3 @@ const jestConfig = createJestConfig({
 });
 
 module.exports = jestConfig;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
