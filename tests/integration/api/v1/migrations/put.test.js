@@ -10,10 +10,9 @@ beforeAll(async () => {
   cleanDatabase();
 });
 
-
 test("Requisições PUT no /api/v1/migrations devem retornar 405", async () => {
   const response = await fetch("http://localhost:3000/api/v1/migrations", {
-    method:'PUT',
+    method: "PUT",
   });
 
   // Was the fetch succesful?
@@ -21,11 +20,20 @@ test("Requisições PUT no /api/v1/migrations devem retornar 405", async () => {
 
   // Runaway connections?
   try {
-    const dummy1 = await fetch("http://localhost:3000/api/v1/migrations",{method:'PUT',});
-    const dummy2 = await fetch("http://localhost:3000/api/v1/migrations",{method:'PUT',});
-    const dummy3 = await fetch("http://localhost:3000/api/v1/migrations",{method:'PUT',});
-  } catch (err) { } finally {
-    const statusBody = await (await fetch("http://localhost:3000/api/v1/status")).json();
+    const dummy1 = await fetch("http://localhost:3000/api/v1/migrations", {
+      method: "PUT",
+    });
+    const dummy2 = await fetch("http://localhost:3000/api/v1/migrations", {
+      method: "PUT",
+    });
+    const dummy3 = await fetch("http://localhost:3000/api/v1/migrations", {
+      method: "PUT",
+    });
+  } catch (err) {
+  } finally {
+    const statusBody = await (
+      await fetch("http://localhost:3000/api/v1/status")
+    ).json();
     expect(statusBody.dependencies.database.used_connections).not.toBe(NaN);
     expect(statusBody.dependencies.database.used_connections).toBe(1);
   }

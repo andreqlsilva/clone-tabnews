@@ -1,5 +1,5 @@
 import { Client } from "pg";
- 
+
 async function query(queryObject) {
   let client;
   let result = null;
