@@ -7,7 +7,7 @@ async function cleanDatabase() {
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  cleanDatabase();
+  await cleanDatabase();
 });
 
 test("POST no /api/v1/migrations deve retornar 201 ou 200", async () => {
