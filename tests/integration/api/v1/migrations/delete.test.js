@@ -7,7 +7,7 @@ async function cleanDatabase() {
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  cleanDatabase();
+  await cleanDatabase();
 });
 
 test("Requisições DELETE no /api/v1/migrations devem retornar 405", async () => {
