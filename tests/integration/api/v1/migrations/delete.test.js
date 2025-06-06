@@ -1,13 +1,8 @@
-import database from "infra/database.js";
 import orchestrator from "tests/orchestrator.js";
-
-async function cleanDatabase() {
-  await database.query("DROP SCHEMA PUBLIC CASCADE; CREATE SCHEMA PUBLIC;");
-}
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await cleanDatabase();
+  await orchestrator.clearDatabase();
 });
 
 describe("DELETE /api/v1/migrations", () => {
