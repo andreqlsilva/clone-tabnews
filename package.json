@@ -4,9 +4,8 @@
   "description": "Clone do tabnews para o curso.dev",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
-    "test": "npm run services:up && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand --verbose\"",
-    "posttest": "npm run services:stop",
+    "dev": "trap \"npm run services:down\" INT EXIT && npm run services:up && npm run services:wait:database && npm run migrations:up && next dev",
+    "test": "trap \"npm run services:stop\" INT EXIT && npm run services:up && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand --verbose\"",
     "test:watch": "npm run services:up && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand --watchAll --verbose\"",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
