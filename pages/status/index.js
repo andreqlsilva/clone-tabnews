@@ -27,13 +27,14 @@ function DatabaseStatus() {
     let dbstats = data.dependencies.database;
     Status = (
       <div>
-        <p>Versão do banco de dados: {dbstats.postgres_version}</p>
+        <p>Última atualização: {updatedAtText}</p>
+        <h2>Informações do banco de dados</h2>
+        <p>Versão do Postgres: {dbstats.postgres_version}</p>
         <p>Número máximo de conexões: {dbstats.max_connections}</p>
         <p>Conexões atuais: {dbstats.used_connections}</p>
-        <p>Última atualização: {updatedAtText}</p>
       </div>
     );
   }
 
-  return <div>{Status}</div>;
+  return <>{Status}</>;
 }
