@@ -6,11 +6,11 @@ async function query(queryObject) {
   try {
     client = await getNewClient();
     result = await client.query(queryObject);
-  } catch (err) {
-    console.error(err);
-    throw err;
+    //  } catch (err) {
+    //    console.error(err);
+    //    throw err;
   } finally {
-    await client.end();
+    await client?.end();
   }
   return result;
 }
