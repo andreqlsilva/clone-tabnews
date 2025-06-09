@@ -19,7 +19,7 @@ export class InternalServerError extends Error {
 export class ServiceError extends Error {
   constructor({ cause, message }) {
     super(message || "Serviço indisponível no momento.", { cause });
-    this.name = "InternalServerError";
+    this.name = "ServiceError";
     this.action = "Verifique se o serviço está disponível.";
     this.statusCode = 503;
   }
