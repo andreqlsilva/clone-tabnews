@@ -1,14 +1,12 @@
 import migrationRunner from "node-pg-migrate";
 import { resolve } from "node:path";
 import database from "infra/database.js";
-import { createRouter } from "next-connect";
-import defaultHandlers from "infra/controllers.js";
+import configureRouter from "infra/controllers.js";
 
-const router = createRouter();
-
-router.get(getHandler).post(postHandler);
-
-export default router.handler(defaultHandlers);
+export default configureRouter({
+  get: getHandler,
+  post: postHandler,
+});
 
 const defaultMigrationOptions = {
   dryRun: true,

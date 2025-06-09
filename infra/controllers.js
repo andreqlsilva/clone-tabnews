@@ -1,9 +1,18 @@
+import { createRouter } from "next-connect";
 import { InternalServerError, MethodNotAllowedError } from "infra/errors.js";
 
-const defaultHandlers = {
-  onNoMatch: onNoMatchHandler,
-  onError: onErrorHandler,
-};
+export default configureRouter;
+
+function configureRouter(handlers) {
+  const router = createRouter();
+  for (let method in handlers) {
+    router[method](handlers[method]);
+  }
+  return router.handler({
+    onNoMatch: onNoMatchHandler,
+    onError: onErrorHandler,
+  });
+}
 
 function onNoMatchHandler(request, response) {
   const publicErrorObject = new MethodNotAllowedError();
@@ -20,5 +29,3 @@ function onErrorHandler(error, request, response) {
   //   console.log(publicErrorObject.stack);
   response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
-
-export default defaultHandlers;
