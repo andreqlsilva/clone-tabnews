@@ -11,7 +11,6 @@ describe("POST /api/v1/status", () => {
         method: "POST",
       });
 
-      // Was the fetch succesful?
       expect(response.status).toBe(405);
 
       const responseBody = await response.json();

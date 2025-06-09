@@ -10,7 +10,7 @@ export default router.handler({
   onNoMatch: (request, response) => {
     const publicErrorObject = new MethodNotAllowedError();
     console.log("\nErro por uso de método não permitido.");
-    console.log(publicErrorObject.stack);
+    //    console.log(publicErrorObject.stack);
     response.status(publicErrorObject.statusCode).json(publicErrorObject);
   },
 
@@ -19,7 +19,7 @@ export default router.handler({
       cause: error,
     });
     console.log("\nErro dentro do catch do next-connect:");
-    console.log(publicErrorObject.stack);
+    //   console.log(publicErrorObject.stack);
     response.status(publicErrorObject.statusCode).json(publicErrorObject);
   },
 });

@@ -13,7 +13,7 @@ export default router.handler({
   onNoMatch: (request, response) => {
     const publicErrorObject = new MethodNotAllowedError();
     console.log("\nErro por uso de método não permitido.");
-    console.log(publicErrorObject.stack);
+    //    console.log(publicErrorObject.stack);
     response.status(publicErrorObject.statusCode).json(publicErrorObject);
   },
 
@@ -22,39 +22,34 @@ export default router.handler({
       cause: error,
     });
     console.log("\nErro dentro do catch do next-connect:");
-    console.log(publicErrorObject.stack);
+    //    console.log(publicErrorObject.stack);
     response.status(publicErrorObject.statusCode).json(publicErrorObject);
   },
 });
 
 async function getHandler(request, response) {
   const dbClient = await database.getNewClient();
-  const defMigOpt = {
+  const pendingMigrations = await migrationRunner({
     dbClient: dbClient,
     dryRun: true,
     dir: resolve("infra", "migrations"),
     direction: "up",
     migrationsTable: "pgmigrations",
     verbose: "true",
-  };
-  const pendingMigrations = await migrationRunner(defMigOpt);
+  });
   response.status(200).json(pendingMigrations);
   await dbClient.end();
 }
 
 async function postHandler(request, response) {
   const dbClient = await database.getNewClient();
-  const defMigOpt = {
+  const migratedMigrations = await migrationRunner({
     dbClient: dbClient,
-    dryRun: true,
+    dryRun: false,
     dir: resolve("infra", "migrations"),
     direction: "up",
     migrationsTable: "pgmigrations",
     verbose: "true",
-  };
-  const migratedMigrations = await migrationRunner({
-    ...defMigOpt,
-    dryRun: false,
   });
   if (migratedMigrations.length > 0) {
     response.status(201).json(migratedMigrations);
