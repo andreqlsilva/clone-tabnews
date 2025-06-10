@@ -3,6 +3,7 @@ import { ValidationError } from "infra/errors.js";
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
+  await validateUniqueUsername(userInputValues.username);
 
   const newUser = await runInsertQuery(userInputValues);
 
@@ -22,6 +23,26 @@ async function create(userInputValues) {
       throw new ValidationError({
         message: "O email informado já está sendo utilizado.",
         action: "Utilize outro email para realizar o cadastro.",
+      });
+    }
+  }
+
+  async function validateUniqueUsername(username) {
+    const result = await database.query({
+      text: `
+        SELECT 
+          username
+        FROM
+          users
+        WHERE
+          username = $1
+        ;`,
+      values: [username],
+    });
+    if (result.rows.length > 0) {
+      throw new ValidationError({
+        message: "O nome de usuário informado já está sendo utilizado.",
+        action: "Utilize outro nome de usuário para realizar o cadastro.",
       });
     }
   }

@@ -1,5 +1,5 @@
 import { createRouter } from "next-connect";
-import { 
+import {
   InternalServerError,
   MethodNotAllowedError,
   ValidationError,
