@@ -1,4 +1,4 @@
-import configureRouter from "infra/controllers.js";
+import configureRouter from "infra/controller.js";
 import user from "models/user.js";
 
 export default configureRouter({

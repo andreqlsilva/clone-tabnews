@@ -1,5 +1,5 @@
 import database from "infra/database.js";
-import configureRouter from "infra/controllers.js";
+import configureRouter from "infra/controller.js";
 
 export default configureRouter({
   get: getHandler,

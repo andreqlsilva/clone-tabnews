@@ -1,4 +1,4 @@
-import configureRouter from "infra/controllers.js";
+import configureRouter from "infra/controller.js";
 import migrator from "models/migrator.js";
 
 export default configureRouter({
