@@ -1,11 +1,12 @@
 import database from "infra/database.js";
-import { ValidationError } from "infra/errors.js";
+import { ValidationError, NotFoundError } from "infra/errors.js";
 
 async function create(userInputValues) {
   await validateUniqueEmail(userInputValues.email);
   await validateUniqueUsername(userInputValues.username);
 
   const newUser = await runInsertQuery(userInputValues);
+  return newUser;
 
   async function validateUniqueEmail(email) {
     const result = await database.query({
@@ -19,7 +20,7 @@ async function create(userInputValues) {
         ;`,
       values: [email],
     });
-    if (result.rows.length > 0) {
+    if (result.rowCount > 0) {
       throw new ValidationError({
         message: "O email informado já está sendo utilizado.",
         action: "Utilize outro email para realizar o cadastro.",
@@ -35,7 +36,7 @@ async function create(userInputValues) {
         FROM
           users
         WHERE
-          username = $1
+          LOWER(username) = LOWER($1)
         ;`,
       values: [username],
     });
@@ -46,8 +47,34 @@ async function create(userInputValues) {
       });
     }
   }
+}
 
-  return newUser;
+async function findOneByUsername(username) {
+  return runSelectQuery(username);
+
+  async function runSelectQuery(username) {
+    const result = await database.query({
+      text: `
+        SELECT 
+          *
+        FROM
+          users
+        WHERE
+          LOWER(username) = LOWER($1)
+        LIMIT
+          1
+        ;`,
+      values: [username],
+    });
+    if (result.rows.length < 1) {
+      console.log("this is it...");
+      throw new NotFoundError({
+        message: "Nome de usuário não encontrado.",
+        action: "Verifique se o nome de usuário foi digitado corretamente.",
+      });
+    }
+    return result.rows[0];
+  }
 }
 
 async function runInsertQuery(userInputValues) {
@@ -71,6 +98,7 @@ async function runInsertQuery(userInputValues) {
 
 const user = {
   create,
+  findOneByUsername,
 };
 
 export default user;
